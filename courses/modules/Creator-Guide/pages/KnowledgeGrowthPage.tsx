@@ -1,7 +1,7 @@
 import moduleAssetOutline from '../outlines.json';
-import { moduleAssetUrl } from '../../shared/react/assets';
+import { moduleAssetUrl } from '@shared/react/assets';
 import { useEffect, useId, useRef, useState, type RefObject } from 'react';
-import { Button, ContentBlock, Typography } from '../../shared/react';
+import { Button, ContentBlock, Typography } from '@shared/react';
 import { KnowledgeDiagramViewport, type DiagramView } from './KnowledgeDiagramViewport';
 import './KnowledgeGrowthPage.css';
 import { fieldDirections, frontierRadius, growingRadius } from './knowledgeGrowthModel';

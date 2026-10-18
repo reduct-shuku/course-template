@@ -6,7 +6,9 @@
 
 上传对象是仓库中的 **`courses/` 内容创作文件夹**。将 `courses/` 里面的内容压缩为 `course.zip`，保留 `modules/`、`assets/` 等内部目录结构。压缩包根目录对应 `courses/`，不是整个模板仓库，也不是只上传某个构建输出目录。仓库根目录的 `api_token` 不在压缩范围内。
 
-在模板仓库根目录运行以下 Python 3 示例：
+在模板仓库根目录先执行 `npm --prefix environment/frontend ci`，再执行 `python3 creater-skills/tools/package_course.py`。工具会在本地构建课堂到 `courses/preview/`，更新 `shuku.json` 的 `preview: {"entry":"preview/index.html"}`，并压缩完整 `courses/` 为 `course.zip`。上传操作也可直接交给 [上传课程 Skill](creater-skills/upload/SKILL.md)。
+
+只保存未完成源码、不需要在线预览时，可以使用 `--source-only`，或运行以下打包示例：
 
 ```python
 from pathlib import Path
@@ -27,7 +29,9 @@ ZIP 和解压后的总大小分别不超过 100 MiB，最多 1000 个文件、30
 
 接口以 ZIP 根目录的 `shuku.json` 校验课程信息，不要求 HTML 入口，也不限制 React/TSX 等课程源码扩展名。`schema_version` 为 1，包含 `courseKey`、`title`、`description`、`category`、`repositoryName`（首次必填）和 `stageNote`；`build_profile` 支持 `skill` 或 `static`。用创作说明的信息初始化 `courses/shuku.json`，保留原课程的版本、入口及其他规范字段；源码课程可以保留 `entry: "SKILL.md"` 和 `build_profile: "skill"`。
 
-源码包接收后原样保存课程文件并同步至私有 GitHub 仓库，服务器不构建或执行源码。任务返回 `sourceOnly: true`、`previewUrl: null`；后续上传可直接运行的静态阶段，才提供在线课堂预览和公开审核。
+服务器保存完整课程并同步至私有 GitHub 仓库，不构建或执行源码。含有效 `preview.entry` 的包返回 `sourceOnly: false` 和本人可访问的 `previewUrl`；课堂只提供 preview 目录中的静态资源。没有预览时仍可保存源码，返回 `sourceOnly: true`、`previewUrl: null`。
+
+用户登录术库后，在“课程共创 → 我要创建课程 → 我提交的课程”点击“预览课程”；确认后点击“发布我的课程”提交审核。审核通过后课程公开，退回则保持私有，修改后重新上传。
 
 首次上传与更新阶段版本使用同一个接口。每次上传是完整课程快照，未包含的旧课程文件会被删除。
 

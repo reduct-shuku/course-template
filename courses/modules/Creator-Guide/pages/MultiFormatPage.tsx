@@ -1,7 +1,7 @@
 import moduleAssetOutline from '../outlines.json';
-import { moduleAssetUrl } from '../../shared/react/assets';
+import { moduleAssetUrl } from '@shared/react/assets';
 import { useEffect, useRef, useState, type ReactNode } from 'react';
-import { Button, ContentBlock, Typography } from '../../shared/react';
+import { Button, ContentBlock, Typography } from '@shared/react';
 import './MultiFormatPage.css';
 
 const biological = moduleAssetUrl(moduleAssetOutline.moduleIdentity.id, 'images/multi-format/biological-structure.png');

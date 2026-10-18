@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Button, Select, Typography } from '../../shared/react';
+import { Button, Select, Typography } from '@shared/react';
 import documents from 'virtual:creator-skill-documents';
 import { WeightSharingAblation } from '../components/WeightSharingAblation';
 import './SkillConstraintsPage.css';

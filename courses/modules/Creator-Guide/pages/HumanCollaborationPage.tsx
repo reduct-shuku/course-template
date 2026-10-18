@@ -1,4 +1,4 @@
-import { Typography, moduleAssetUrl } from '../../shared/react';
+import { Typography, moduleAssetUrl } from '@shared/react';
 import outline from '../outlines.json';
 import './HumanCollaborationPage.css';
 function CausalMask({ plain = false }: { plain?: boolean }) {

@@ -217,3 +217,8 @@ description: 规划、设计、实现和验收本仓库的 React 多形态教学
 ## 模块资源规则
 
 活跃模块的图片、视频、3D 模型和 SceneDeck 缩略图统一存放在根目录 `courses/assets/<moduleIdentity.id>/`，不得继续放在模块目录内。TSX、Canvas、WebGL 和运行时资源引用统一使用 Shared `moduleAssetUrl(moduleIdentity.id, relativePath)`；SceneDeck 的 `assetId` 必须使用同一签名 UUID。CSS 背景图通过组件传入的 CSS 自定义属性使用 `moduleAssetUrl` 生成，不得写死本地或 CDN 地址。开发环境使用本地静态目录；部署 CDN 时只设置 `VITE_ASSET_BASE_URL` 并上传根目录 `courses/assets/`，不得逐页修改路径。
+
+
+## 上传阶段版本
+
+用户要求上传术库时，按 [上传课程 Skill](upload/SKILL.md) 本地构建预览、打包 courses 并调用上传接口。

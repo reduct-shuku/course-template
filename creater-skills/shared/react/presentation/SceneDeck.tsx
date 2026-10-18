@@ -14,13 +14,13 @@ interface LessonProgressState { completedIds?: string[]; visibleCount?: number; 
 export type { DeckDefinition, LessonContext, SceneDeckProps, SceneDefinition, SpeakerNote } from './types';
 
 function sceneIndexFromUrl(scenes: SceneDefinition[]) {
-  const requested = new URLSearchParams(window.location.search).get('slide');
+  const requested = new URLSearchParams(import.meta.env.VITE_SHUKU_EXPORT ? (window.location.hash.split('?')[1] || '') : window.location.search).get('slide');
   const index = requested ? scenes.findIndex((scene) => scene.id === requested) : 0;
   return index >= 0 ? index : 0;
 }
 
 function deckFromUrl(catalog: SceneDeckProps['catalog']) {
-  const requested = new URLSearchParams(window.location.search).get('deck');
+  const requested = new URLSearchParams(import.meta.env.VITE_SHUKU_EXPORT ? (window.location.hash.split('?')[1] || '') : window.location.search).get('deck');
   return catalog.find((deck) => deck.id === requested) ?? catalog[0];
 }
 
@@ -118,7 +118,7 @@ function Icon({ name, className }: { name: IconName; className?: string }) {
 }
 
 export function SceneDeck(props: SceneDeckProps) {
-  if (new URLSearchParams(window.location.search).get('scenedeckCapture') === '1') {
+  if (new URLSearchParams(import.meta.env.VITE_SHUKU_EXPORT ? (window.location.hash.split('?')[1] || '') : window.location.search).get('scenedeckCapture') === '1') {
     return <SceneDeckCapture catalog={props.catalog} />;
   }
   return <SceneDeckPlayer {...props} />;
@@ -178,9 +178,10 @@ function SceneDeckPlayer({ catalog, moduleId, assetId, progressKey, getNotes }: 
   const navigate = useCallback((requestedIndex: number) => {
     const nextIndex = Math.min(scenes.length - 1, Math.max(0, requestedIndex));
     setSceneIndex(nextIndex);
-    const url = new URL(window.location.href);
+    const url = new URL(import.meta.env.VITE_SHUKU_EXPORT ? window.location.hash.slice(1) : window.location.href, window.location.href);
     url.searchParams.set('slide', scenes[nextIndex].id);
-    window.history.replaceState(null, '', url);
+    if (import.meta.env.VITE_SHUKU_EXPORT) window.location.hash = url.pathname + url.search;
+    else window.history.replaceState(null, '', url);
   }, [scenes]);
 
   const complete = useCallback(() => {
@@ -227,10 +228,11 @@ function SceneDeckPlayer({ catalog, moduleId, assetId, progressKey, getNotes }: 
     setCompletedIds(readProgress(deckValue(progressKey, deck.id)));
     setNoteIndex(0);
     setCourseMenuOpen(false);
-    const url = new URL(window.location.href);
+    const url = new URL(import.meta.env.VITE_SHUKU_EXPORT ? window.location.hash.slice(1) : window.location.href, window.location.href);
     url.searchParams.delete('slide');
     url.searchParams.set('deck', deck.id);
-    window.history.replaceState(null, '', url);
+    if (import.meta.env.VITE_SHUKU_EXPORT) window.location.hash = url.pathname + url.search;
+    else window.history.replaceState(null, '', url);
   }, [progressKey]);
 
   useEffect(() => {

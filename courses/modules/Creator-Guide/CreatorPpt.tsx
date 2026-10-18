@@ -1,5 +1,5 @@
 import './CreatorTypography.css';
-import { SceneDeck, type DeckDefinition } from '../shared/react/presentation';
+import { SceneDeck, type DeckDefinition } from '@shared/react/presentation';
 import { KnowledgeGrowthPage } from './pages/KnowledgeGrowthPage';
 import { LearningGoalPage } from './pages/LearningGoalPage';
 import { EducationPathsPage } from './pages/EducationPathsPage';

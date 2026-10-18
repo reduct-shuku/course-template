@@ -1,4 +1,4 @@
-import { Typography } from '../../shared/react';
+import { Typography } from '@shared/react';
 import './SkillOverviewPage.css';
 
 type IconKind = 'file' | 'cursor' | 'palette' | 'layout' | 'cube' | 'code' | 'folder' | 'layers' | 'bolt';

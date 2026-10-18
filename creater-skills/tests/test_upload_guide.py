@@ -88,6 +88,38 @@ class UploadGuideTest(unittest.TestCase):
         self.assertIn("不限制 React/TSX", guide)
         self.assertIn("sourceOnly: true", guide)
 
+    def test_local_build_packages_source_and_preview_and_updates_manifest(self):
+        import importlib.util
+        from unittest.mock import patch
+        spec = importlib.util.spec_from_file_location("package_course", ROOT / "creater-skills/tools/package_course.py")
+        tool = importlib.util.module_from_spec(spec)
+        spec.loader.exec_module(tool)
+        with tempfile.TemporaryDirectory() as temporary:
+            root = Path(temporary)
+            for name, content in {"courses/shuku.json": '{"courseKey":"keep-me","entry":"SKILL.md"}',
+                                  "courses/modules/Lesson.tsx": "source", "api_token": "private",
+                                  "runtime/data/build/frontend/index.html": '<script src="./assets/app.js"></script>',
+                                  "runtime/data/build/frontend/assets/app.js": "built"}.items():
+                target = root / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content)
+            with patch.object(tool.subprocess, "run") as build:
+                archive = tool.package(root)
+                self.assertEqual(build.call_args.kwargs["env"]["SHUKU_EXPORT"], "1")
+            manifest = json.loads((root / "courses/shuku.json").read_text())
+            self.assertEqual(manifest["courseKey"], "keep-me")
+            self.assertEqual(manifest["entry"], "SKILL.md")
+            self.assertEqual(manifest["preview"], {"entry": "preview/index.html"})
+            with ZipFile(archive) as package:
+                self.assertEqual(set(package.namelist()), {"shuku.json", "modules/Lesson.tsx", "preview/index.html", "preview/assets/app.js"})
+            source_archive = tool.package(root, build=False)
+            with ZipFile(source_archive) as source:
+                self.assertNotIn("preview/index.html", source.namelist())
+                self.assertNotIn("preview", json.loads(source.read("shuku.json")))
+            with patch.object(tool.subprocess, "run", side_effect=subprocess.CalledProcessError(1, "npm")):
+                with self.assertRaises(subprocess.CalledProcessError):
+                    tool.package(root)
+
     def test_token_file_is_ignored_and_guide_is_discoverable(self):
         ignored = subprocess.run(["git", "check-ignore", "--no-index", "api_token"],
                                  cwd=ROOT, capture_output=True, text=True, check=True)

@@ -1,4 +1,4 @@
-const configuredAssetBase = import.meta.env.VITE_ASSET_BASE_URL?.trim();
+const configuredAssetBase = import.meta.env.VITE_SHUKU_EXPORT ? '' : import.meta.env.VITE_ASSET_BASE_URL?.trim();
 const defaultAssetBase = import.meta.env.BASE_URL;
 
 /** Build a stable module asset URL shared by local development and CDN hosting. */

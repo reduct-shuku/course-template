@@ -1,4 +1,4 @@
-import { Typography, MathFormulaBlock, MathFormulaStatic, moduleAssetUrl } from '../../shared/react';
+import { Typography, MathFormulaBlock, MathFormulaStatic, moduleAssetUrl } from '@shared/react';
 import outline from '../outlines.json';
 import './LessIsMorePage.css';
 import { LossLandscape } from '../components/LossLandscape';

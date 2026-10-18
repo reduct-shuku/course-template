@@ -1,7 +1,7 @@
 import './CreatorTypography.css';
 import { useLayoutEffect, useRef, useState, type ReactNode } from 'react';
-import '../shared/react/styles.css';
-import '../shared/react/ui-kit.css';
+import '@shared/react/styles.css';
+import '@shared/react/ui-kit.css';
 import { KnowledgeGrowthPage } from './pages/KnowledgeGrowthPage';
 import { LearningGoalPage } from './pages/LearningGoalPage';
 import { EducationPathsPage } from './pages/EducationPathsPage';

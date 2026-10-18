@@ -1,4 +1,4 @@
-import { ContentBlock, Typography } from '../../shared/react';
+import { ContentBlock, Typography } from '@shared/react';
 import { WormholeScene } from '../components/WormholeScene';
 import { matterModel, travelComparison } from '../components/wormholeMatter';
 import './WormholePages.css';

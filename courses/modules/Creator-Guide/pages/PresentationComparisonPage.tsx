@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Typography, moduleAssetUrl } from '../../shared/react';
+import { Typography, moduleAssetUrl } from '@shared/react';
 import outline from '../outlines.json';
 import './PresentationComparisonPage.css';
 

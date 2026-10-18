@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Typography, RangeControl, Select, TextInput, Button } from '../../shared/react';
+import { Typography, RangeControl, Select, TextInput, Button } from '@shared/react';
 import './ProgressiveDisclosurePage.css';
 
 type Settings={dataset:string;batch:number;depth:number;width:number;activation:string;regularization:number;rate:number;optimizer:string;epochs:number};

@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react';
-import { Button, Typography, moduleAssetUrl } from '../../shared/react';
+import { Button, Typography, moduleAssetUrl } from '@shared/react';
 import outline from '../outlines.json';
 import './WeightSharingAblation.css';
 

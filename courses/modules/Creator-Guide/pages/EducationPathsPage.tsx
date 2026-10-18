@@ -1,4 +1,4 @@
-import { Typography } from '../../shared/react';
+import { Typography } from '@shared/react';
 import { KnowledgeIcebergScene } from '../components/KnowledgeIcebergScene';
 import './EducationPathsPage.css';
 

@@ -1,5 +1,5 @@
 import { useEffect, useId, useRef, useState } from 'react';
-import { Button, ContentBlock, TextInput, Typography } from '../../shared/react';
+import { Button, ContentBlock, TextInput, Typography } from '@shared/react';
 import { WorkflowArtifactCard, WorkflowBrowser, CaoChongPreview } from '../components/WorkflowPreview';
 import { workflowStages, type WorkflowArtifact } from '../components/workflowDemo';
 import './CreationWorkflowPage.css';

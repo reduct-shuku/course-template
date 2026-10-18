@@ -24,12 +24,13 @@ function normalizePath(path: string): string {
 }
 
 function getLocation() {
-  return normalizePath(window.location.pathname);
+  return normalizePath(import.meta.env.VITE_SHUKU_EXPORT ? window.location.hash.slice(1) : window.location.pathname);
 }
 
 function subscribe(onChange: () => void) {
   window.addEventListener('popstate', onChange);
-  return () => window.removeEventListener('popstate', onChange);
+  window.addEventListener('hashchange', onChange);
+  return () => { window.removeEventListener('popstate', onChange); window.removeEventListener('hashchange', onChange); };
 }
 
 export function useAppPath(): string {
@@ -45,6 +46,7 @@ export function matchAppRoute(path: string, routePath: string): boolean {
 }
 
 export function navigate(path: string, replace = false): void {
+  if (import.meta.env.VITE_SHUKU_EXPORT) { window.location.hash = path; return; }
   const nextPath = normalizePath(path);
   if (replace) window.history.replaceState({}, '', nextPath);
   else window.history.pushState({}, '', nextPath);
@@ -70,5 +72,14 @@ export function AppLink({ to, replace = false, onClick, className, ...props }: A
     navigate(to, replace);
   }, [onClick, replace, to]);
 
-  return <a {...props} href={to} className={classNames('app-link', className)} onClick={handleClick} />;
+  return <a {...props} href={import.meta.env.VITE_SHUKU_EXPORT ? '#' + to : to} className={classNames('app-link', className)} onClick={handleClick} />;
+}
+
+if (import.meta.env.VITE_SHUKU_EXPORT) {
+  document.addEventListener('click', event => {
+    const link = (event.target as Element)?.closest<HTMLAnchorElement>('a[href^="/"]');
+    if (!link || link.getAttribute('href')?.startsWith('//') || event.defaultPrevented || event.button !== 0) return;
+    event.preventDefault();
+    window.location.hash = link.getAttribute('href')!;
+  });
 }
