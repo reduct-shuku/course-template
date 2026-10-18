@@ -64,6 +64,10 @@ npm --prefix environment/frontend run preview
 
 课程画布固定为 1600×900；Guide 和 PPT 共享页面。课程 URL 保持 `/modules/<目录名小写>`，URL 与磁盘路径不同。
 
+## 上传到术库
+
+将上传凭证保存为仓库根目录的 `api_token` 文件，完成阶段版本后按 [术库上传方法](UPLOAD.md) 打包、上传并查询结果。
+
 ## 可选后端与 AI
 
 需要 Python 3.10+。默认安装使用 PATH 中的 Python，可通过 -Python 指定：

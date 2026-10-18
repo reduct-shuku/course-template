@@ -43,3 +43,5 @@ Thumbs.db
 Desktop.ini
 *.swp
 *.swo
+# Shuku upload credential (local only)
+/api_token
