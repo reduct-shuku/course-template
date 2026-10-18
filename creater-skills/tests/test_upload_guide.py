@@ -84,7 +84,9 @@ class UploadGuideTest(unittest.TestCase):
                 self.assertEqual(set(package.namelist()), {
                     "shuku.json", "modules/Demo/README.md", "modules/Demo/Lesson.tsx", "assets/example.svg"})
                 self.assertEqual(package.read("modules/Demo/README.md"), b"course notes")
-        self.assertIn("不支持模板原始 React/TSX 源码", guide)
+        self.assertIn("不要求 HTML 入口", guide)
+        self.assertIn("不限制 React/TSX", guide)
+        self.assertIn("sourceOnly: true", guide)
 
     def test_token_file_is_ignored_and_guide_is_discoverable(self):
         ignored = subprocess.run(["git", "check-ignore", "--no-index", "api_token"],

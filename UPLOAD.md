@@ -23,9 +23,11 @@ with ZipFile("course.zip", "w", compression=ZIP_DEFLATED) as package:
 
 例如 `courses/modules/课程名/` 会保存为 ZIP 内的 `modules/课程名/`，`courses/assets/` 保存为 `assets/`，`courses/shuku.json` 位于 ZIP 根目录。
 
-ZIP 和解压后的总大小分别不超过 100 MiB，最多 100 个文件；`shuku.json` 不超过 32 KiB。后续阶段保留同一 `courseKey`，更新 `stageNote`。
+ZIP 和解压后的总大小分别不超过 100 MiB，最多 1000 个文件、3000 个文件与目录项；`shuku.json` 不超过 32 KiB。后续阶段保留同一 `courseKey`，更新 `stageNote`。
 
-**当前接口兼容性：** 上面的打包范围是 `courses/` 全部内容；当前术库上传接口仍只支持 `official/static`、HTML 入口和静态资源，不支持模板原始 React/TSX 源码或 `build_profile=skill`。模板现有 `courses/shuku.json` 也不能直接替代创作说明中的上传描述。仅压缩原始 `courses/` 尚不能保证上传成功；接收此类课程源码包还需要调整术库接口，不能把接收失败报告为上传成功。
+接口以 ZIP 根目录的 `shuku.json` 校验课程信息，不要求 HTML 入口，也不限制 React/TSX 等课程源码扩展名。`schema_version` 为 1，包含 `courseKey`、`title`、`description`、`category`、`repositoryName`（首次必填）和 `stageNote`；`build_profile` 支持 `skill` 或 `static`。用创作说明的信息初始化 `courses/shuku.json`，保留原课程的版本、入口及其他规范字段；源码课程可以保留 `entry: "SKILL.md"` 和 `build_profile: "skill"`。
+
+源码包接收后原样保存课程文件并同步至私有 GitHub 仓库，服务器不构建或执行源码。任务返回 `sourceOnly: true`、`previewUrl: null`；后续上传可直接运行的静态阶段，才提供在线课堂预览和公开审核。
 
 首次上传与更新阶段版本使用同一个接口。每次上传是完整课程快照，未包含的旧课程文件会被删除。
 
