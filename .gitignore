@@ -1,0 +1,45 @@
+# Local credentials and identity signing keys
+/environment/backend/.private/
+/environment/backend/settings.json
+.env
+.env.*
+!.env.example
+!.env.*.example
+!.env.sample
+.npmrc
+.pypirc
+*.pem
+*.key
+*.p12
+*.pfx
+
+# Installed dependencies and Python environments
+node_modules/
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+*.egg-info/
+*.dist-info/
+
+# Generated runtime state, logs, caches and builds
+/runtime/data/
+*.tsbuildinfo
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+.coverage
+htmlcov/
+coverage/
+*.log
+*.pid
+*.pid.lock
+
+# Local editor and operating-system files
+.idea/
+.vscode/
+.DS_Store
+Thumbs.db
+Desktop.ini
+*.swp
+*.swo

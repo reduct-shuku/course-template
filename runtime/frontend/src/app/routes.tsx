@@ -1,0 +1,48 @@
+import { ContentBlock, ModuleShell } from '@shared/react';
+import { SceneDeck, type DeckDefinition } from '@shared/react/presentation';
+import { UiKitPage } from '@shared/react/routing/UiKitPage';
+import { activeModules, type ActiveModule, type ModulePageOutline } from './modules';
+import { AppLink, type AppRoute } from './Router';
+
+const pptModules = activeModules.filter((module) => module.pptDeck);
+const pptCatalog = pptModules.map((module) => module.pptDeck) as [DeckDefinition, ...DeckDefinition[]];
+
+function SceneDeckPage() {
+  if (!pptCatalog.length) return <ModuleShell title="SceneDeck" subtitle="暂无课程。添加带有 PPT 入口的模块后，将自动出现在这里。" />;
+  return <SceneDeck
+    catalog={pptCatalog}
+    moduleId={(deckId) => deckId}
+    assetId={(deckId) => pptModules.find((module) => module.pptDeck?.id === deckId)?.assetId ?? deckId}
+    progressKey={(deckId) => `lesson-flow:${deckId}`}
+    getNotes={(sceneId, deckId) => pptModules.find((module) => module.pptDeck?.id === deckId)?.getPptNotes?.(sceneId) ?? []}
+  />;
+}
+
+/** 页面索引中的每一页对应 PPT 的一页；没有 PPT 的模块指向课程本身。 */
+function pageHref(module: ActiveModule, page: ModulePageOutline) {
+  return module.pptPath ? `${module.pptPath}?deck=${encodeURIComponent(module.id)}&slide=${encodeURIComponent(page.id)}` : module.path;
+}
+
+function HomePage() {
+  return <ModuleShell title="课程模板" subtitle="创建课程前，可以先查看 Shared UI Kit 和 SceneDeck。" shellClassName="app-home-shell">
+    <section className="app-course-directory" aria-labelledby="app-course-directory-title">
+      <header className="app-course-directory__head"><div><span className="app-course-directory__kicker">COURSE DIRECTORY</span><h2 id="app-course-directory-title">课程模块</h2></div><p>选择一个课程，进入完整学习流程或 SceneDeck。</p></header>
+      <div className="app-course-accordion">{activeModules.length === 0 && <ContentBlock title="暂无课程" subtitle="在 courses/modules/ 下添加课程目录及 outlines.json，课程将自动注册。" />}{activeModules.map((module, moduleIndex) => <details className="app-course-group" key={module.id} open><summary className="app-course-group__summary"><span className="app-course-group__index">{String(moduleIndex + 1).padStart(2, '0')}</span><span className="app-course-group__copy"><strong>{module.title}</strong><span>{module.description}</span></span><span className="app-course-group__count">{module.pages.length} 页</span><span className="app-course-group__chevron" aria-hidden="true" /></summary><div className="app-course-group__body"><AppLink className="app-course-launch" to={module.path}><span className="edu-badge">{module.badge}</span><span><strong>进入完整课程</strong><small>按教学顺序连续学习全部内容</small></span><em>开始学习 →</em></AppLink>{module.pages.length > 0 && <ol className="app-course-lessons">{module.pages.map((page, index) => <li key={page.id}><a className="app-course-lesson" href={pageHref(module, page)}><span className="app-course-lesson__number">{String(index + 1).padStart(2, '0')}</span><span className="app-course-lesson__copy"><strong>{page.title}</strong><small>{page.goal ?? page.summary}</small></span><span className="app-course-lesson__arrow" aria-hidden="true">→</span></a></li>)}</ol>}</div></details>)}</div>
+    </section>
+    <ContentBlock className="app-developer-tools" title="开发工具" subtitle="共享组件检查与 SceneDeck 演示入口。"><div className="app-developer-tools__grid"><AppLink className="app-ui-kit-card" to="/shared/ui-kit"><span className="edu-badge">设计系统</span><strong>Shared UI Kit</strong><span>检查共享组件、流程控制和题型。</span><em>打开 →</em></AppLink><a className="app-ui-kit-card" href="/scenedeck/"><span className="edu-badge">SceneDeck</span><strong>SceneDeck 播放器</strong><span>用固定 1600 × 900 场景播放课程。</span><em>打开 →</em></a></div></ContentBlock>
+  </ModuleShell>;
+}
+
+export const appRoutes: AppRoute[] = [
+  { path: '/', element: <HomePage /> },
+  { path: '/shared/ui-kit', element: <UiKitPage /> },
+  ...activeModules.flatMap((module) => [
+    { path: module.path, element: module.element },
+  ]),
+  ...[
+    { path: '/scenedeck/', element: <SceneDeckPage /> },
+    { path: '/web_ppt/', element: <SceneDeckPage /> },
+    { path: '/web_ppt/slide.html', element: <SceneDeckPage /> },
+  ],
+];
+

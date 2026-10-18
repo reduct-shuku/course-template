@@ -1,0 +1,4 @@
+# Optional training dependencies. Select the CPU/CUDA wheel index for your machine.
+torch
+torchvision
+tqdm

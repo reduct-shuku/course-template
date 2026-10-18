@@ -1,0 +1,72 @@
+{
+  "schemaVersion": 1,
+  "name": "course-template",
+  "version": "1.0.0",
+  "description": "Course authoring template with standalone preview and optional local services",
+  "runtime": {
+    "type": "command",
+    "workingDirectory": "../.."
+  },
+  "requirements": {
+    "commands": [
+      "node",
+      "npm",
+      "powershell.exe"
+    ],
+    "ports": [
+      5173
+    ]
+  },
+  "lifecycle": {
+    "bootstrap": {
+      "cmd": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "environment/install.ps1"
+      ],
+      "timeoutMs": 120000,
+      "required": true
+    },
+    "validate": {
+      "cmd": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "creater-skills/check.ps1"
+      ],
+      "timeoutMs": 120000,
+      "required": true
+    },
+    "stop": {
+      "cmd": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "runtime/stop.ps1"
+      ],
+      "timeoutMs": 60000,
+      "required": false
+    }
+  },
+  "actions": {
+    "preparePage": {
+      "cmd": "powershell.exe",
+      "args": [
+        "-NoProfile",
+        "-ExecutionPolicy",
+        "Bypass",
+        "-File",
+        "runtime/start.ps1"
+      ],
+      "timeoutMs": 120000,
+      "requiresReady": false
+    }
+  }
+}

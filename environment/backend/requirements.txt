@@ -1,0 +1,5 @@
+# Compatibility installation for existing full local environments.
+# New installations should select extras documented in backend/README.md.
+-e ./environment/backend[vision,faces,assessment,projection,tools]
+uuid_utils
+# Install torch and torchvision separately for the desired CPU/CUDA platform.

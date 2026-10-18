@@ -1,0 +1,17 @@
+{
+  "schema_version": 1,
+  "name": "course-library",
+  "version": "0.1.0",
+  "repository": "",
+  "ref": "main",
+  "path": ".",
+  "contributing": "CONTRIBUTING.md",
+  "changes": [
+    "增加 Shuku Skill 入口、课程元数据和贡献说明；提供 20 页 GAN 与 Diffusion 互动课程。"
+  ],
+  "title": "互动课程库",
+  "description": "按课程大纲引导学习并启动互动课程的 Guide 与 PPT 预览，当前包含视觉生成、GAN 和 Diffusion 课程。",
+  "entry": "SKILL.md",
+  "type": "official",
+  "build_profile": "skill"
+}

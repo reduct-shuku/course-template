@@ -1,0 +1,15 @@
+课程 UI 制作参考（当前 React 版本）
+
+规则入口：creater-skills/SKILL.md。
+组件源码：creater-skills/shared/react/；实际预览：/shared/ui-kit。
+课程实现：courses/modules/<课程名>/；课程素材：courses/assets/<签名UUID>/。
+
+1. 复用完整组件及行为，不只模仿外观。按钮、滑杆、输入、题目、流程、公式和图表从 @shared/react 导入。
+2. 标题使用 ContentBlock，独立文字使用 Typography；使用 Shared Theme 的语义 Token。
+3. 页面固定 1600×900，由外层整体缩放。布局紧凑、无重复信息，禁止用响应式重排或横向滚动掩盖溢出。
+4. 渐进显示使用 ProgressiveReveal 或 LessonFlow；一道题完成后自然衔接下一步，避免无意义留白。
+5. 提示应有真实状态变化；训练与参数变化应由图表反馈，不显示虚构训练结果。
+6. 数学表达使用 MathFormulaBlock，Guide / PPT 简答题复用 Question 的双模式行为。
+7. 替换组件时清理旧代码和样式，检查失效引用；执行 creater-skills/check.ps1 并检查截图和交互状态。
+
+旧版 HTML 的 DLModuleUI / DLPlot API 不作为新课程的制作接口。

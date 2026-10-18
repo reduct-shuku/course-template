@@ -1,0 +1,32 @@
+{
+  "name": "course-template",
+  "private": true,
+  "version": "0.1.0",
+  "type": "module",
+  "scripts": {
+    "dev": "vite --config vite.config.ts",
+    "build": "tsc -b && vite build --config vite.config.ts",
+    "typecheck": "tsc --noEmit",
+    "preview": "vite preview --config vite.config.ts",
+    "cache:decision": "node ../../creater-skills/tools/content/generate_decision_candidate_cache.mjs",
+    "check:bounds": "node ../../creater-skills/tools/checks/validate_ppt_bounds.mjs"
+  },
+  "dependencies": {
+    "@icon-park/react": "^1.4.2",
+    "react": "19.2.7",
+    "react-dom": "19.2.7",
+    "three": "^0.186.1"
+  },
+  "devDependencies": {
+    "@tailwindcss/vite": "^4.3.3",
+    "@types/node": "^22.20.5",
+    "@types/react": "^19.1.8",
+    "@types/react-dom": "^19.1.6",
+    "@types/three": "^0.186.0",
+    "@vitejs/plugin-react": "^4.4.1",
+    "postcss": "^8.5.8",
+    "tailwindcss": "^4.3.3",
+    "typescript": "^5.8.3",
+    "vite": "^6.3.5"
+  }
+}
