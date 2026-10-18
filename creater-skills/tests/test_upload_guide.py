@@ -7,6 +7,7 @@ import tempfile
 import threading
 from http.server import BaseHTTPRequestHandler, ThreadingHTTPServer
 import unittest
+from zipfile import ZipFile
 
 ROOT = Path(__file__).resolve().parents[2]
 
@@ -61,6 +62,29 @@ class UploadGuideTest(unittest.TestCase):
             server.shutdown()
             server.server_close()
             thread.join(timeout=3)
+
+    def test_documented_package_contains_courses_content_without_repository_files(self):
+        guide = (ROOT / "UPLOAD.md").read_text(encoding="utf-8")
+        programs = re.findall(r"```python\n(.*?)\n```", guide, re.S)
+        self.assertEqual(len(programs), 1)
+        with tempfile.TemporaryDirectory() as temporary:
+            directory = Path(temporary)
+            files = {"courses/shuku.json": '{"schema_version":1}',
+                     "courses/modules/Demo/README.md": "course notes",
+                     "courses/modules/Demo/Lesson.tsx": "export default function Lesson() {}",
+                     "courses/assets/example.svg": "<svg/>",
+                     "api_token": "example-local-token", "environment/config.json": "{}",
+                     "runtime/start.ps1": "runtime", ".git/config": "git metadata"}
+            for name, content in files.items():
+                target = directory / name
+                target.parent.mkdir(parents=True, exist_ok=True)
+                target.write_text(content, encoding="utf-8")
+            subprocess.run(["python3", "-c", programs[0]], cwd=directory, check=True, timeout=15)
+            with ZipFile(directory / "course.zip") as package:
+                self.assertEqual(set(package.namelist()), {
+                    "shuku.json", "modules/Demo/README.md", "modules/Demo/Lesson.tsx", "assets/example.svg"})
+                self.assertEqual(package.read("modules/Demo/README.md"), b"course notes")
+        self.assertIn("不支持模板原始 React/TSX 源码", guide)
 
     def test_token_file_is_ignored_and_guide_is_discoverable(self):
         ignored = subprocess.run(["git", "check-ignore", "--no-index", "api_token"],

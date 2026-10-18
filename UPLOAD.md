@@ -4,9 +4,28 @@
 
 ## 准备课程包
 
-完成课程后导出单门课程的静态页面，将页面、所需资源和上传描述 `shuku.json` 打包为 `course.zip`。ZIP 根目录必须有 HTML 入口（默认 `index.html`）和 `shuku.json`，资源使用相对路径。不要直接压缩整个开发仓库；`api_token` 留在本地，不加入 ZIP。
+上传对象是仓库中的 **`courses/` 内容创作文件夹**。将 `courses/` 里面的内容压缩为 `course.zip`，保留 `modules/`、`assets/` 等内部目录结构。压缩包根目录对应 `courses/`，不是整个模板仓库，也不是只上传某个构建输出目录。仓库根目录的 `api_token` 不在压缩范围内。
 
-ZIP 和解压后的总大小分别不超过 100 MiB，最多 100 个文件；`shuku.json` 不超过 32 KiB。上传描述使用创作说明给出的课程信息，后续阶段保留同一 `courseKey`，更新 `stageNote`。模板 `courses/modules/shuku.json` 是课程库元数据，与上传描述分别维护。
+在模板仓库根目录运行以下 Python 3 示例：
+
+```python
+from pathlib import Path
+from zipfile import ZipFile, ZIP_DEFLATED
+
+courses = Path("courses")
+if not courses.is_dir():
+    raise SystemExit("请在模板仓库根目录运行，确保 courses 文件夹存在。")
+with ZipFile("course.zip", "w", compression=ZIP_DEFLATED) as package:
+    for file in sorted(courses.rglob("*")):
+        if file.is_file():
+            package.write(file, file.relative_to(courses).as_posix())
+```
+
+例如 `courses/modules/课程名/` 会保存为 ZIP 内的 `modules/课程名/`，`courses/assets/` 保存为 `assets/`，`courses/shuku.json` 位于 ZIP 根目录。
+
+ZIP 和解压后的总大小分别不超过 100 MiB，最多 100 个文件；`shuku.json` 不超过 32 KiB。后续阶段保留同一 `courseKey`，更新 `stageNote`。
+
+**当前接口兼容性：** 上面的打包范围是 `courses/` 全部内容；当前术库上传接口仍只支持 `official/static`、HTML 入口和静态资源，不支持模板原始 React/TSX 源码或 `build_profile=skill`。模板现有 `courses/shuku.json` 也不能直接替代创作说明中的上传描述。仅压缩原始 `courses/` 尚不能保证上传成功；接收此类课程源码包还需要调整术库接口，不能把接收失败报告为上传成功。
 
 首次上传与更新阶段版本使用同一个接口。每次上传是完整课程快照，未包含的旧课程文件会被删除。
 
