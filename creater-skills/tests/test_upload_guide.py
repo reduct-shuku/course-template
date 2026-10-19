@@ -13,6 +13,14 @@ ROOT = Path(__file__).resolve().parents[2]
 
 
 class UploadGuideTest(unittest.TestCase):
+    def test_contribution_preview_is_committable_and_uses_fork_workflow(self):
+        guide = (ROOT / "creater-skills/collaboration/SKILL.md").read_text(encoding="utf-8")
+        self.assertIn("个人工作分支", guide)
+        self.assertIn("courses/preview/", guide)
+        self.assertIn("不调用阶段版本上传接口", guide)
+        self.assertIn("package_course.py", guide)
+        self.assertNotIn("/courses/preview/", (ROOT / ".gitignore").read_text())
+
     def test_documented_upload_and_query_use_local_token_and_file_only(self):
         guide = (ROOT / "UPLOAD.md").read_text(encoding="utf-8")
         commands = re.findall(r"```bash\n(.*?)\n```", guide, re.S)

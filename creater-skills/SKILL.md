@@ -222,3 +222,5 @@ description: 规划、设计、实现和验收本仓库的 React 多形态教学
 ## 上传阶段版本
 
 用户要求上传术库时，按 [上传课程 Skill](upload/SKILL.md) 本地构建预览、打包 courses 并调用上传接口。
+
+已有课程的个人 Fork 共创，按 [collaboration/SKILL.md](collaboration/SKILL.md) 编辑、生成预览并提交 PR；创建者的阶段版本上传按 [upload/SKILL.md](upload/SKILL.md)。
