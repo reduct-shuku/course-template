@@ -135,5 +135,50 @@ class UploadGuideTest(unittest.TestCase):
         self.assertIn("(UPLOAD.md)", (ROOT / "README.md").read_text(encoding="utf-8"))
 
 
+class AuthoringDocumentationTest(unittest.TestCase):
+    def test_routed_guides_resolve_inside_template_and_use_real_entrypoints(self):
+        root = ROOT / "creater-skills"
+        entry = (root / "SKILL.md").read_text(encoding="utf-8")
+        self.assertRegex(entry, r"(?s)^---\nname: creater-skills\ndescription: .+?\n---")
+        pending = [root / "SKILL.md"]
+        visited = set()
+        while pending:
+            document = pending.pop()
+            if document in visited:
+                continue
+            visited.add(document)
+            content = document.read_text(encoding="utf-8")
+            for link in re.findall(r"\]\(([^)]+)\)", content):
+                if "://" in link or link.startswith("#"):
+                    continue
+                target = (document.parent / link.split("#")[0]).resolve()
+                self.assertTrue(target.is_relative_to(ROOT.resolve()), (document, link))
+                self.assertTrue(target.exists(), (document, link))
+                if target.is_file() and target.suffix == ".md" and target.is_relative_to(root.resolve()):
+                    pending.append(target)
+        for name in ["teaching-design.md", "course-outline.md", "implementation.md", "validation.md"]:
+            self.assertIn((root / "guides" / name).resolve(), {p.resolve() for p in visited})
+        for path in ["environment/install.ps1", "runtime/start.ps1", "runtime/stop.ps1",
+                     "runtime/frontend/src/app/modules.tsx",
+                     "creater-skills/tools/python/idl_authoring/identity.py",
+                     "creater-skills/tools/python/idl_authoring/keys.py"]:
+            self.assertTrue((ROOT / path).is_file(), path)
+        scripts = json.loads((ROOT / "environment/frontend/package.json").read_text(encoding="utf-8"))["scripts"]
+        self.assertTrue({"typecheck", "build"}.issubset(scripts))
+        self.assertEqual((ROOT / "creater-skills/shared/react/index.ts").is_file(), True)
+
+    def test_regression_scenarios_are_distinct_and_routed_from_entrypoint(self):
+        root = ROOT / "creater-skills"
+        document = root / "evals/scenarios.json"
+        scenarios = json.loads(document.read_text(encoding="utf-8"))["scenarios"]
+        ids = [case["id"] for case in scenarios]
+        self.assertEqual(len(ids), len(set(ids)))
+        for case in scenarios:
+            self.assertTrue(case["request"].strip())
+            self.assertTrue(case["expected_behavior"])
+            self.assertTrue(all(isinstance(item, str) and item.strip() for item in case["expected_behavior"]))
+        self.assertIn("(evals/scenarios.json)", (root / "SKILL.md").read_text(encoding="utf-8"))
+
+
 if __name__ == "__main__":
     unittest.main()
