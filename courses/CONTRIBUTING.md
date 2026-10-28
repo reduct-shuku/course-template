@@ -21,8 +21,8 @@
 在 course-template 根目录执行：
 
 ```powershell
-.\creater-skills\check.ps1 -Kind courses -Python C:\path\to\python.exe
-.\creater-skills\check.ps1 -Kind frontend
+.\creator-skills\check.ps1 -Kind courses -Python C:\path\to\python.exe
+.\creator-skills\check.ps1 -Kind frontend
 ```
 
 格式校验需 Python 3.9+，且不要求安装后端依赖。还需确认 Markdown 相对链接有效、Guide 与 PPT 可访问，页面变更满足 1600×900 画布及交互检查。涉及身份时按配套身份指南验证签名。

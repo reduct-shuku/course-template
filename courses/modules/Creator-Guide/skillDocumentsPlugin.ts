@@ -15,7 +15,7 @@ export function creatorSkillDocuments(): Plugin {
   }
   return {
     name: 'creator-skill-documents',
-    configResolved(config) { directory = path.resolve(config.root, '../../creater-skills'); },
+    configResolved(config) { directory = path.resolve(config.root, '../../creator-skills'); },
     resolveId(id) { if (id === moduleId) return resolvedId; },
     load(id) {
       if (id !== resolvedId) return;

@@ -21,7 +21,7 @@ courses/
 
 初始化身份后还会生成 courses/identity-public-key.txt。私钥位于 environment/backend/.private/。
 
-modules/ 是 Shuku 包根目录，课程子目录沿用页面和素材布局。标准、元数据填写与分发限制见 [Shuku 格式指南](../creater-skills/guides/shuku-format.md)。运行 `./creater-skills/check.ps1 -Kind courses` 校验课程库；需要 Python 3.9+，无需后端依赖。
+modules/ 是 Shuku 包根目录，课程子目录沿用页面和素材布局。标准、元数据填写与分发限制见 [Shuku 格式指南](../creator-skills/guides/shuku-format.md)。运行 `./creator-skills/check.ps1 -Kind courses` 校验课程库；需要 Python 3.9+，无需后端依赖。
 
 modules/ 已补齐基础文件，repository 尚待提供实际 GitHub 仓库；该项未填写前严格校验会失败。当前采用 skill 模式，通过完整 course-template 提供网页预览，不能将模块目录直接当作独立静态 HTML 包。
 
@@ -42,4 +42,4 @@ path 是 URL，必须为 /modules/ 加课程目录名的小写形式。entry 文
 
 公共能力通过 `@shared/react` 导入，避免手算跨目录相对路径。页面、讲稿、数据、状态与专属 CSS 留在当前课程。素材通过 moduleAssetUrl 引用。
 
-安装与预览使用根目录说明中的 environment/install.ps1 和 runtime/start.ps1。完整规范见 [creater-skills/SKILL.md](../creater-skills/SKILL.md)。
+安装与预览使用根目录说明中的 environment/install.ps1 和 runtime/start.ps1。完整规范见 [creator-skills/SKILL.md](../creator-skills/SKILL.md)。

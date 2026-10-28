@@ -25,7 +25,7 @@ description: 按课程大纲引导学习，并在配套 course-template 环境�
 
 本 Skill 当前随 course-template 配套使用，页面依赖其中的 Shared、Vite 配置和统一素材目录。独立复制此模块不能直接启动网页；先检查配套文件是否存在，缺少时说明需要完整项目，不自行下载不明依赖。
 
-在当前布局中，从本目录向上两级找到包含 `environment/install.ps1`、`runtime/start.ps1` 和 `creater-skills/shared/` 的 course-template 根目录。所有启动命令在该根目录执行：
+在当前布局中，从本目录向上两级找到包含 `environment/install.ps1`、`runtime/start.ps1` 和 `creator-skills/shared/` 的 course-template 根目录。所有启动命令在该根目录执行：
 
 ```powershell
 .\environment\install.ps1
@@ -41,7 +41,7 @@ description: 按课程大纲引导学习，并在配套 course-template 环境�
 
 ## 贡献本 Skill
 
-用户要求贡献、提交、发布修改或创建 Pull Request 时，先读取 [CONTRIBUTING.md](CONTRIBUTING.md)。不要假定安装目录是 Git 仓库。需要修改课程页面时，遵循配套项目 `creater-skills/SKILL.md`，保留现有模块身份和素材 UUID。
+用户要求贡献、提交、发布修改或创建 Pull Request 时，先读取 [CONTRIBUTING.md](CONTRIBUTING.md)。不要假定安装目录是 Git 仓库。需要修改课程页面时，遵循配套项目 `creator-skills/SKILL.md`，保留现有模块身份和素材 UUID。
 
 ## 完成标准
 
