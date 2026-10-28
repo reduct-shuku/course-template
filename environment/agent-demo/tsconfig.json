@@ -45,7 +45,7 @@
     ]
   },
   "include": [
-    "../../creater-skills/demos/web-agent/src",
+    "../../creator-skills/demos/web-agent/src",
     "vite.config.ts"
   ]
 }

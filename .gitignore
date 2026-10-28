@@ -48,3 +48,6 @@ Desktop.ini
 
 # Local Shuku upload artifacts
 /course.zip
+
+# Authoring drafts and page inspection artifacts
+_scratchpad/

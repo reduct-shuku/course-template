@@ -62,7 +62,7 @@ function creatorSkillDocuments(): Plugin {
   }
   return {
     name: 'creator-skill-documents',
-    configResolved(config) { directory = path.resolve(config.root, '../../creater-skills'); },
+    configResolved(config) { directory = path.resolve(config.root, '../../creator-skills'); },
     resolveId(id) { if (id === moduleId) return resolvedId; },
     load(id) {
       if (id !== resolvedId) return;
@@ -120,7 +120,7 @@ export default defineConfig(({ mode, command }) => {
     publicDir: path.join(repository, 'courses/assets'),
     resolve: {
       alias: [
-        { find: '@shared', replacement: path.join(repository, 'creater-skills/shared') },
+        { find: '@shared', replacement: path.join(repository, 'creator-skills/shared') },
         { find: /^react-dom(\/.*)?$/, replacement: path.join(configuration, 'node_modules/react-dom') + '$1' },
         { find: /^react(\/.*)?$/, replacement: path.join(configuration, 'node_modules/react') + '$1' },
         { find: 'three', replacement: path.join(configuration, 'node_modules/three') },

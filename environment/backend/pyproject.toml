@@ -22,7 +22,7 @@ test = ["pytest"]
 idl-backend = "idl_backend.cli:main"
 
 [tool.setuptools.packages.find]
-where = ["../../runtime/backend/src", "../../creater-skills/tools/python"]
+where = ["../../runtime/backend/src", "../../creator-skills/tools/python"]
 
 [tool.setuptools.package-data]
 "idl_backend.assessment" = ["data/*.json", "data/precomputed/*.json"]

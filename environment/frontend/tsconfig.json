@@ -21,7 +21,7 @@
     "jsx": "react-jsx",
     "paths": {
       "@shared/*": [
-        "../../creater-skills/shared/*"
+        "../../creator-skills/shared/*"
       ],
       "react": [
         "./node_modules/@types/react/index.d.ts"
@@ -60,7 +60,7 @@
   },
   "include": [
     "../../runtime/frontend/src",
-    "../../creater-skills/shared",
+    "../../creator-skills/shared",
     "../../courses/modules",
     "vite.config.ts"
   ]

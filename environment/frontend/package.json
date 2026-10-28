@@ -8,8 +8,8 @@
     "build": "tsc -b && vite build --config vite.config.ts",
     "typecheck": "tsc --noEmit",
     "preview": "vite preview --config vite.config.ts",
-    "cache:decision": "node ../../creater-skills/tools/content/generate_decision_candidate_cache.mjs",
-    "check:bounds": "node ../../creater-skills/tools/checks/validate_ppt_bounds.mjs"
+    "cache:decision": "node ../../creator-skills/tools/content/generate_decision_candidate_cache.mjs",
+    "check:bounds": "node ../../creator-skills/tools/checks/validate_ppt_bounds.mjs"
   },
   "dependencies": {
     "@icon-park/react": "^1.4.2",

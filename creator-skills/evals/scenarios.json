@@ -1,0 +1,139 @@
+{
+  "description": "用于静态审阅与后续真实 Agent 试用；文件本身不是自动评估器。",
+  "scenarios": [
+    {
+      "id": "shuku-preparation-only",
+      "request": "这是术库生成的课程创作说明：课程标题为目标检测，课程简介为模型发展历程，请保存课程信息和上传凭证，等我告诉你具体怎么做。",
+      "expected_behavior": [
+        "只准备本地模板、读取所需规范并保存课程信息和凭证。",
+        "不生成大纲、页面、正式素材，不构建、上传或提交 PR。",
+        "准备完成后等待用户的具体课程设计或修改指令。"
+      ]
+    },
+    {
+      "id": "new-course",
+      "request": "给零基础学生制作一套线性回归课程，先开始。",
+      "expected_behavior": [
+        "先讨论受众、核心问题和大纲，保存或迭代 outlines.json。",
+        "大纲未确认前不生成第一页设计图或实现页面。",
+        "仅选读相关质量基线，不加载 LLM、GPU 或所有个人偏好。"
+      ]
+    },
+    {
+      "id": "next-page",
+      "context": "课程大纲已确认，上一页已验收。",
+      "request": "设计下一页，给我看看。",
+      "expected_behavior": [
+        "沿用已确认大纲，不重新请求整套大纲。",
+        "给出教学目标、视觉主角、核心交互和实际生成的设计图；没有图像生成能力时如实说明。",
+        "未获得实现授权前不写该页 React、CSS 或正式素材。"
+      ]
+    },
+    {
+      "id": "local-fix",
+      "context": "页面视觉已确认。",
+      "request": "修复第三页公式被截断的问题，其他地方别动。",
+      "expected_behavior": [
+        "限定到相关页面定位修复，不要求大纲确认或重新生图。",
+        "复用公式组件，不改 Shared。",
+        "检查实际截图、画布边界及相关状态。"
+      ]
+    },
+    {
+      "id": "faithful-conversion",
+      "request": "把这份 PPT 原样转换为 React，保留布局、配色和页序。",
+      "expected_behavior": [
+        "保留指定原稿关系，不默认重构为卡片课程或硬凑页数。",
+        "只做必要适配；发现事实错误或无法同时满足的画布要求时说明。",
+        "先确认转换范围，设计预览按用户已有授权处理。"
+      ]
+    },
+    {
+      "id": "continuous-production",
+      "context": "大纲和视觉方向均已确认，用户已要求跳过后续预览。",
+      "request": "按这个风格把剩下五页直接做完。",
+      "expected_behavior": [
+        "在已确认方向下连续制作，不逐页重复索要授权或生图。",
+        "逐页独立验证默认和相关交互状态，不省略验收。"
+      ]
+    },
+    {
+      "id": "short-answer",
+      "request": "这页加一道简答题，Guide 能答题，PPT 能揭示参考答案。",
+      "expected_behavior": [
+        "使用 Shared Question 与 referenceAnswer，不手写 isPpt 分支。",
+        "新题不要求 assessment.json 或 taskId 登记。",
+        "PPT 揭示不调用模型；Guide 使用现有三级评价，服务失败不伪造反馈。"
+      ]
+    },
+    {
+      "id": "coauthor",
+      "request": "我是新的共创者，创建一门课程，按仓库工程约束就行。",
+      "expected_behavior": [
+        "不默认加载或继承原作者个人偏好与特殊页面授权。",
+        "本模板新模块按 idl_authoring 身份指南签发 UUID 与 Ed25519 签名；已有共创课程身份保持不变。",
+        "资源放 courses/assets/<moduleIdentity.id>/，上传保留平台给定 courseKey。"
+      ]
+    },
+    {
+      "id": "preview-unavailable",
+      "context": "大纲已确认，当前 Agent 没有可用图像生成能力，也没有直接实现授权。",
+      "request": "先给我下一页的设计预览。",
+      "expected_behavior": [
+        "说明工具不可用与已完成的文字设计范围。",
+        "不把提示词称为生成图，不擅自开始实现。"
+      ]
+    },
+    {
+      "id": "unrelated-react",
+      "request": "给普通电商后台加一个订单列表。",
+      "expected_behavior": [
+        "识别为普通 React 开发，不套用本 skill 的固定教学画布与课程确认流程。"
+      ]
+    },
+    {
+      "id": "hosted-upload",
+      "context": "课程在术库私有工作区，用户已完成并确认修改。",
+      "request": "把本次修改上传到术库，给我预览。",
+      "expected_behavior": [
+        "按 upload/SKILL.md 和 UPLOAD.md 构建、打包 courses/ 并上传。",
+        "从 api_token 读取凭证，保持 courseKey；查询任务结果后报告真实预览状态。",
+        "不把私有工作区误当成个人 GitHub Fork。"
+      ]
+    },
+    {
+      "id": "personal-fork",
+      "context": "课程是用户个人 GitHub Fork，具体修改已确认。",
+      "request": "提交这次共创修改。",
+      "expected_behavior": [
+        "按 collaboration/SKILL.md 生成预览并推送个人工作分支。",
+        "按用户授权提交或更新 PR，不调用阶段版本上传接口。",
+        "已有课程身份和来源版本保持稳定。"
+      ]
+    },
+    {
+      "id": "narrative-to-page-delivery",
+      "request": "已经确认主线，现在展开大纲给我看看。",
+      "expected_behavior": [
+        "沿用已确认主线，交付逐页题目和实际演讲稿，不重新开始访谈。",
+        "大纲页面仅保存 title 和 snippet，播放器 ID 在实现代码中维护。"
+      ]
+    },
+    {
+      "id": "visual-pair-before-design",
+      "request": "按已确认大纲设计下一页。",
+      "expected_behavior": [
+        "实际打开相关成对视觉正反例，将具体取舍写入当前页生图提示词。",
+        "第一页封面例外，其余页默认沿用 ContentBlock 标准标题区；设计图与真实验收截图分开。"
+      ]
+    },
+    {
+      "id": "resume-page-work",
+      "request": "继续修改上次的第二页。",
+      "expected_behavior": [
+        "检查当前页已有成果与有效确认，从实际阶段接续，不因已有代码就跳过未确认的设计。",
+        "保留无关页面和课程的签名身份，局部修复不重新制作整份课程。"
+      ]
+    }
+  ]
+}

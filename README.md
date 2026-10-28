@@ -6,7 +6,7 @@
 course-template/
 ├── README.md
 ├── AGENTS.md
-├── creater-skills/          创作规范、组件、设计系统、工具、验证与演示
+├── creator-skills/          创作规范、组件、设计系统、工具、验证与演示
 ├── runtime/                 网页预览、后端服务、启停与运行数据
 ├── environment/             安装入口、依赖清单、构建配置和本地环境
 └── courses/                 课程源码、大纲、讲稿和素材
@@ -36,7 +36,7 @@ course-template/
 ```powershell
 .\runtime\start.ps1 -Status
 .\runtime\stop.ps1                 # 停止本模板启动的服务
-.\creater-skills\check.ps1                # 类型检查和生产构建
+.\creator-skills\check.ps1                # 类型检查和生产构建
 ```
 
 预览进程在后台启动，不打开额外窗口。重新启动时复用已运行的服务；停止只针对本模板记录且通过实例校验的进程。修改 .env.local 后需要停止并重新启动。命令都可从其他工作目录以完整路径调用。
@@ -54,13 +54,13 @@ npm --prefix environment/frontend run preview
 
 ## 创建课程
 
-1. 阅读 [创作规范](creater-skills/SKILL.md) 和 [课程目录说明](courses/README.md)。
+1. 阅读 [创作规范](creator-skills/SKILL.md) 和 [课程目录说明](courses/README.md)。
 2. 使用 UI Kit 检查组件，通过 `@shared/react` 导入公共组件。
 3. 在 `courses/modules/<课程名>/` 创建 outlines.json、React 页面、Guide 入口和 PPT 适配器。首页会自动发现。
-   Shuku 标准的 README.md、SKILL.md、shuku.json、CONTRIBUTING.md 统一位于 `courses/modules/`；新增课程时同步更新课程库入口，详见 [Shuku 格式指南](creater-skills/guides/shuku-format.md)。
-4. 新课程创建前按 [身份指南](creater-skills/guides/module-identity.md) 初始化独立密钥，创建后签发并验证身份。
+   Shuku 标准的 README.md、SKILL.md、shuku.json、CONTRIBUTING.md 统一位于 `courses/modules/`；新增课程时同步更新课程库入口，详见 [Shuku 格式指南](creator-skills/guides/shuku-format.md)。
+4. 新课程创建前按 [身份指南](creator-skills/guides/module-identity.md) 初始化独立密钥，创建后签发并验证身份。
 5. 素材放在 `courses/assets/<签名 UUID>/`，统一通过 moduleAssetUrl 引用。
-6. 运行 `./creater-skills/check.ps1 -Kind courses` 校验 `courses/modules/` 的 Shuku 格式（Python 3.9+，无后端依赖）。需填写课程库实际所属的 GitHub 仓库；当前 repository 待配置，严格校验会明确报错。
+6. 运行 `./creator-skills/check.ps1 -Kind courses` 校验 `courses/modules/` 的 Shuku 格式（Python 3.9+，无后端依赖）。需填写课程库实际所属的 GitHub 仓库；当前 repository 待配置，严格校验会明确报错。
 
 课程画布固定为 1600×900；Guide 和 PPT 共享页面。课程 URL 保持 `/modules/<目录名小写>`，URL 与磁盘路径不同。
 
@@ -97,7 +97,7 @@ $env:LLM_MODEL='your-model'
 ```powershell
 .\runtime\start.ps1 -Kind records -Status
 .\runtime\stop.ps1 -Kind records
-.\creater-skills\check.ps1 -Kind backend
+.\creator-skills\check.ps1 -Kind backend
 ```
 
 学习记录默认不启用。需要时启动 records，在 `environment/frontend/.env.local` 设置 VITE_ENABLE_TELEMETRY=true 并重启预览。
@@ -110,10 +110,10 @@ $env:LLM_MODEL='your-model'
 .\environment\install.ps1 -Kind agent-demo
 .\runtime\start.ps1 -Kind agent-demo
 .\runtime\stop.ps1 -Kind agent-demo
-.\creater-skills\check.ps1 -Kind agent-demo
+.\creator-skills\check.ps1 -Kind agent-demo
 ```
 
-地址 http://127.0.0.1:5183 。源码位于 creater-skills/demos/web-agent/，依赖与配置位于 environment/agent-demo/；详见 [演示说明](creater-skills/demos/web-agent/README.md)。
+地址 http://127.0.0.1:5183 。源码位于 creator-skills/demos/web-agent/，依赖与配置位于 environment/agent-demo/；详见 [演示说明](creator-skills/demos/web-agent/README.md)。
 
 ## 数据、构建与生成工具
 
@@ -133,19 +133,19 @@ $env:LLM_MODEL='your-model'
 
 这些运行目录按需生成，不作为初始课程内容。重新分发模板时排除 node_modules、.venv、.private 和 runtime/data；不要删除课程签发公钥。
 
-[内容生成与验证工具](creater-skills/tools/README.md) 包含缩略图、页面边界、候选答案和 t-SNE / Grad-CAM 工具。安装后端环境后先激活它：
+[内容生成与验证工具](creator-skills/tools/README.md) 包含缩略图、页面边界、候选答案和 t-SNE / Grad-CAM 工具。安装后端环境后先激活它：
 
 ```powershell
 .\environment\backend\.venv\Scripts\Activate.ps1
 python -m idl_authoring.content.generate_scenedeck_thumbnails --module your-module
-.\creater-skills\check.ps1 -Kind all
+.\creator-skills\check.ps1 -Kind all
 ```
 
 当前包含已导入的视觉生成课程及其教学素材，不包含真实训练集、模型权重或供应商密钥。该课程的教学模拟在浏览器执行，预览无需启动 Python 计算或 AI 服务。
 
 ## 整理后验证
 
-已通过 creater-skills/check.ps1 的两套前端构建、28 项测试和身份验证。浏览器验证了空课程预览、公共组件、临时课程自动注册、Guide/PPT 交互、素材加载与新 idl_authoring 工具包的缩略图生成；两套网页预览和记录服务的启停已检查。临时课程和验证产物不包含在交付模板中。
+已通过 creator-skills/check.ps1 的两套前端构建、28 项测试和身份验证。浏览器验证了空课程预览、公共组件、临时课程自动注册、Guide/PPT 交互、素材加载与新 idl_authoring 工具包的缩略图生成；两套网页预览和记录服务的启停已检查。临时课程和验证产物不包含在交付模板中。
 
 未调用真实上游 AI，也未执行需要外部训练集或权重的模型训练；可选 Cloud 链路未在此次验证中启动。
 

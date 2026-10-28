@@ -1,15 +1,8 @@
 import type { ComponentType, ReactNode } from 'react';
 import type { DeckDefinition, SpeakerNote } from '@shared/react/presentation';
 
-export interface ModulePageOutline {
-  id: string;
-  title: string;
-  goal?: string;
-  summary?: string;
-  interaction?: string;
-  next?: string;
-  snippet?: string;
-}
+import {modulePages,type OutlinePage,type ModulePageOutline} from './modulePages';
+export type {ModulePageOutline} from './modulePages';
 
 export interface ActiveModule {
   id: string;
@@ -49,7 +42,7 @@ interface ModuleOutlineFile {
   /** 课程主入口组件所在的文件名，例如 ExpandedNeuronGuidePage.tsx */
   entry?: string;
   ppt?: { entry?: string; path?: string; player?: boolean };
-  pages?: ModulePageOutline[];
+  pages?: OutlinePage[];
 }
 
 // 模块在 courses/modules/<目录>/outlines.json 里注册自己：应用路由、首页入口和页面索引都来自这份文件。
@@ -92,7 +85,7 @@ export const activeModules: ActiveModule[] = Object.entries(outlineFiles)
       moduleType: outline.moduleType,
       difficulty: outline.difficulty,
       audience: outline.audience,
-      pages: outline.pages ?? [],
+      pages: modulePages(outline.pages??[],(pptExports?.deck as DeckDefinition|undefined)?.scenes),
       pptPath: outline.ppt?.path,
       pptElement: entryElement(dir, outline.ppt?.entry),
       pptDeck: pptExports?.deck as DeckDefinition | undefined,

@@ -14,7 +14,7 @@ const dependencies: Plugin = {
   },
 };
 export default defineConfig({
-  root: path.join(repository, 'creater-skills/demos/web-agent'),
+  root: path.join(repository, 'creator-skills/demos/web-agent'),
   envDir: configuration,
   cacheDir: path.join(repository, 'runtime/data/cache/agent-demo'),
   resolve: { alias: [
