@@ -4,7 +4,7 @@
 
 ## 准备课程包
 
-上传对象是仓库中的 **`courses/` 内容创作文件夹**。将 `courses/` 里面的内容压缩为 `course.zip`，保留 `modules/`、`assets/` 等内部目录结构。压缩包根目录对应 `courses/`，不是整个模板仓库，也不是只上传某个构建输出目录。仓库根目录的 `api_token` 不在压缩范围内。
+上传对象是仓库中的 **`courses/` 内容创作文件夹**。将 `courses/` 里面的内容压缩为 `course.zip`，保留 `modules/`、`assets/` 等内部目录结构。压缩包根目录对应 `courses/`，不是整个模板仓库，也不是只上传某个构建输出目录。仓库根目录的 `api_token` 不在压缩范围内。模块及逐页 `_scratchpad/` 中的设计、prompt 和检查记录不上传。
 
 在模板仓库根目录先执行 `npm --prefix environment/frontend ci`，再执行 `python3 creator-skills/tools/package_course.py`。工具会在本地构建课堂到 `courses/preview/`，更新 `shuku.json` 的 `preview: {"entry":"preview/index.html"}`，并压缩完整 `courses/` 为 `course.zip`。上传操作也可直接交给 [上传课程 Skill](creator-skills/upload/SKILL.md)。
 
@@ -19,7 +19,7 @@ if not courses.is_dir():
     raise SystemExit("请在模板仓库根目录运行，确保 courses 文件夹存在。")
 with ZipFile("course.zip", "w", compression=ZIP_DEFLATED) as package:
     for file in sorted(courses.rglob("*")):
-        if file.is_file():
+        if file.is_file() and "_scratchpad" not in file.relative_to(courses).parts:
             package.write(file, file.relative_to(courses).as_posix())
 ```
 

@@ -81,6 +81,8 @@ class UploadGuideTest(unittest.TestCase):
                      "courses/modules/Demo/README.md": "course notes",
                      "courses/modules/Demo/Lesson.tsx": "export default function Lesson() {}",
                      "courses/assets/example.svg": "<svg/>",
+                     "courses/modules/Demo/_scratchpad/original.txt": "private draft",
+                     "courses/modules/Demo/pages/Opening/_scratchpad/prompt.txt": "private prompt",
                      "api_token": "example-local-token", "environment/config.json": "{}",
                      "runtime/start.ps1": "runtime", ".git/config": "git metadata"}
             for name, content in files.items():
